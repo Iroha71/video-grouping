@@ -1,0 +1,50 @@
+@startuml db_relation
+title DBの関連図
+
+entity users {
+	* id : bigint <<PK>>
+	--
+	name : varchar
+	email : varchar <<UQ>>
+	email_verified_at : timestamp <<NULL>>
+	password : varchar
+	remember_token : varchar <<NULL>>
+  role: integer
+	created_at : timestamp
+	updated_at : timestamp
+}
+
+entity password_reset_tokens {
+	* email : varchar <<PK>>
+	--
+	token : varchar
+	created_at : timestamp <<NULL>>
+}
+
+entity sessions {
+	* id : varchar <<PK>>
+	--
+	user_id : bigint <<FK, NULL>>
+	ip_address : varchar(45) <<NULL>>
+	user_agent : text <<NULL>>
+	payload : longtext
+	last_activity : integer
+}
+
+entity playlists {
+  * id: bigint <<PK>>
+  ---
+  * title: varchar
+  * user_id: bigint <<FK>>
+}
+
+entity videos {
+  * id: bigint <<PK>>
+  ---
+  * url: varchar
+  * playlist_id: varchar
+}
+
+users ||--o{ sessions : "user_id → id"
+
+@enduml
